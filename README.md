@@ -1,5 +1,5 @@
 
-# TechHunterclone
+# TechHunterClone
 
 A brief description of the project
 
