@@ -20,6 +20,7 @@ This project is a job searching platform that connects job seekers with recruite
 ## Project Structure
 
 Below is a high-level overview of the project structure:
+```
 ├───src
 │   ├───assets
 │   │   └───emails          # Templates for emails to be sent by the application
@@ -47,3 +48,5 @@ Below is a high-level overview of the project structure:
 │   └───utils
 │       ├───validator       # Input validation utilities
 │       └───response        # Standardized response formatting utilities
+
+```
