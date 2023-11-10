@@ -22,31 +22,51 @@ This project is a job searching platform that connects job seekers with recruite
 Below is a high-level overview of the project structure:
 ```
 ├───src
-│   ├───assets
-│   │   └───emails          # Templates for emails to be sent by the application
 │   ├───config
+│   │   # Configuration files for the application
 │   ├───database
 │   │   ├───migrations
-│   │   └───seeds           # Initial data seeding for roles, admin users, etc.
+│   │   │   # Database migration scripts for evolving the database schema
+│   │   └───recruiter
+│   │       # Database-related code and scripts specific to the recruiter module
 │   ├───handlers
-│   │   ├───jobseeker       # Handlers specific to jobseeker actions
-│   │   └───recruiter       # Handlers specific to recruiter actions
+│   │   ├───jobseeker
+│   │   │   # Handlers and controllers specific to jobseeker actions
+│   │   └───recruiter
+│   │       # Handlers and controllers specific to recruiter actions
 │   ├───middlewares
-│   │   ├───auth            # Authentication middleware (e.g., JWT, sessions)
-│   │   └───roles           # Role-based access control middleware
+│   │   ├───auth
+│   │   │   # Middleware code for authentication (e.g., JWT, sessions)
+│   │   └───roles
+│   │       # Middleware code for role-based access control
 │   ├───models
-│   │   ├───user            # User model, interfaces for jobseekers and recruiters
-│   │   ├───job             # Job posting model
-│   │   └───application     # Job application model
+│   │   ├───application
+│   │   │   # Models and data structures related to job applications
+│   │   ├───job
+│   │   │   # Models and data structures related to job postings
+│   │   └───user
+│   │       # Models and data structures related to users, including jobseekers and recruiters
 │   ├───routes
-│   │   ├───public          # Publicly accessible routes (e.g., job listings, company profiles)
-│   │   ├───private         # Protected routes for authenticated users
-│   │   └───admin           # Administrative routes for platform management
+│   │   ├───public
+│   │   │   # Publicly accessible routes, such as job listings and company profiles
+│   │   ├───private
+│   │   │   # Protected routes for authenticated users
+│   │   └───web
+│   │       # Web-specific routes for rendering HTML templates
 │   ├───services
-│   │   ├───search          # Services for job and resume search functionalities
-│   │   └───notification    # Services for sending notifications or alerts
-│   └───utils
-│       ├───validator       # Input validation utilities
-│       └───response        # Standardized response formatting utilities
+│   │   ├───auth_service
+│   │   │   # Authentication-related services and functions
+│   │   ├───notification
+│   │   │   # Services for sending notifications or alerts
+│   │   └───search
+│   │       # Services related to searching for jobs and resumes
+│   └───templates
+│       # Templates for rendering HTML pages
+└───utils
+    ├───response
+    │   # Utilities for formatting standardized response data
+    └───validators
+        # Utilities for input validation
+
 
 ```
