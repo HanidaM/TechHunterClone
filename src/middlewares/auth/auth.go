@@ -2,13 +2,13 @@ package auth
 
 import (
 	models "TechHunterClone/src/models/user"
+	services "TechHunterClone/src/services/auth_service"
 	"errors"
+	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"net/http"
 	"time"
 )
-
-const secretKey = "your-secret-key"
 
 func errorResponse(c *gin.Context, status int, err error) {
 	c.AbortWithError(status, err)
@@ -25,9 +25,9 @@ func RegisterHandler(c *gin.Context) {
 	var role models.Role
 	switch roleStr {
 	case "user":
-		role = models.Role_ROLE_USER
+		role = models.RoleUser
 	case "recruiter":
-		role = models.Role_ROLE_RECRUITER
+		role = models.RoleRecruiter
 	}
 
 	user := &models.User{
@@ -48,14 +48,20 @@ func RegisterHandler(c *gin.Context) {
 		return
 	}
 
-	// Get the database connection from the context
+	hashedPassword, err := services.HashPassword(password) // Hash the password
+	if err != nil {
+		errorResponse(c, http.StatusInternalServerError, errors.New("failed to hash password"))
+		return
+	}
+
+	user.Password = hashedPassword // Set the hashed password
+
 	db, ok := c.Get("db")
 	if !ok {
 		errorResponse(c, http.StatusInternalServerError, errors.New("database connection not found"))
 		return
 	}
 
-	// Cast the db to *gorm.DB
 	dbInstance, ok := db.(*gorm.DB)
 	if !ok {
 		errorResponse(c, http.StatusInternalServerError, errors.New("invalid database connection"))
@@ -79,14 +85,12 @@ func LoginHandler(c *gin.Context) {
 		return
 	}
 
-	// Get the database connection from the context
 	db, ok := c.Get("db")
 	if !ok {
 		errorResponse(c, http.StatusInternalServerError, errors.New("database connection not found in context"))
 		return
 	}
 
-	// Cast the db to *gorm.DB
 	dbInstance, ok := db.(*gorm.DB)
 	if !ok {
 		errorResponse(c, http.StatusInternalServerError, errors.New("invalid database connection in context"))
@@ -99,18 +103,18 @@ func LoginHandler(c *gin.Context) {
 		return
 	}
 
-	if err := services.VerifyUserPassword(&user, password); err != nil {
+	if err := services.CheckPassword(user.Password, password); err != nil {
 		errorResponse(c, http.StatusUnauthorized, errors.New("invalid email or password"))
 		return
 	}
 
-	access_token, err := services.CreateToken(&user)
+	accessToken, err := services.CreateToken(&user)
 	if err != nil {
 		errorResponse(c, http.StatusInternalServerError, err)
 		return
 	}
 
-	c.SetCookie("token", access_token, int(time.Hour.Seconds()*48), "/", "", false, true)
+	c.SetCookie("token", accessToken, int(time.Hour.Seconds()*48), "/", "", false, true)
 
 	c.Redirect(http.StatusFound, "/main")
 }

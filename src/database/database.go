@@ -2,9 +2,9 @@ package database
 
 import (
 	"fmt"
-
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"log"
 )
 
 const (
@@ -15,15 +15,19 @@ const (
 	dbname   = "postgres"
 )
 
-var DB *gorm.DB // Define a global variable to hold the database connection
+var DB *gorm.DB
 
 func ConnectDB() {
-	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=verify-full",
-		host, port, user, password, dbname)
 
 	var err error
+
+	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s",
+		host, port, user, password, dbname)
+
 	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		panic(err)
+		log.Fatalf("Could not connect to the database: %v", err)
 	}
+
+	log.Println("Connected to the database successfully")
 }
