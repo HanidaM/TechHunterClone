@@ -10,9 +10,9 @@ import (
 const (
 	host     = "localhost"
 	port     = 5432
-	user     = "postgres"
+	user     = "baurzhkk"
 	password = "bauka2003"
-	dbname   = "postgres"
+	dbname   = "techbd"
 )
 
 var DB *gorm.DB

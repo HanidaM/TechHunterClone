@@ -3,9 +3,11 @@ package services
 import (
 	models "TechHunterClone/src/models/user"
 	"errors"
+	"strings"
+	"time"
+
 	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
-	"time"
 )
 
 func HashPassword(password string) (string, error) {
@@ -34,21 +36,28 @@ func CreateToken(user *models.User) (string, error) {
 }
 
 func ValidateUser(user *models.User) error {
-	if user.FirstName == "" || user.LastName == "" {
-		return errors.New("first name and last name are required")
+	if len(user.FirstName) == 0 {
+		return errors.New("first name is required")
 	}
 
-	if user.Email == "" {
-		return errors.New("email is required")
+	if len(user.LastName) == 0 {
+		return errors.New("last name is required")
 	}
 
-	if user.Password == "" {
-		return errors.New("password is required")
+	if !isValidEmail(user.Email) {
+		return errors.New("invalid email format")
 	}
 
-	if len(user.Password) < 8 {
-		return errors.New("password must be at least 8 characters long")
+	if len(user.Password) < 6 {
+		return errors.New("password must be at least 6 characters long")
 	}
 
 	return nil
+}
+
+func isValidEmail(email string) bool {
+	if len(email) < 3 && len(email) > 254 {
+		return false
+	}
+	return strings.Contains(email, "@")
 }

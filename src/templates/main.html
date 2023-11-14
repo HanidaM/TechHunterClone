@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,8 +28,8 @@
           
         </ul>
         <div class="col-md-3 text-end">
-          <button type="button" class="btn btn-outline-danger me-2"  data-bs-toggle="modal" data-bs-target="#LoginForm">Login</button>
-          <button type="button" class="btn btn-danger"  data-bs-toggle="modal" data-bs-target="#RegisterForm">Sign-up</button>
+          <button type="button" class="btn btn-outline-danger me-2" >Login</button>
+          <button type="button" class="btn btn-danger" >Sign-up</button>
         </div>      
       </div>
     </div>
@@ -160,93 +160,6 @@
       </div>
     </div>
 </footer>
-
-
-
-
-
-
-
-<div class="modal fade" id="LoginForm" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-        <!-- Login Form -->
-        <form method="POST" action="main/login">
-          <div class="modal-header">
-            <h5 class="modal-title">Login Form</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mb-3">
-                <label for="Username">Username<span class="text-danger">*</span></label>
-                <input type="text" name="username" class="form-control" id="Username" placeholder="Enter Username">
-            </div>
-
-            <div class="mb-3">
-                <label for="Password">Password<span class="text-danger">*</span></label>
-                <input type="password" name="password" class="form-control" id="Password" placeholder="Enter Password">
-            </div>
-            <div class="mb-3">
-                <input class="form-check-input" type="checkbox" value="" id="remember" required>
-                <label class="form-check-label" for="remember">Remember Me</label>
-                <a href="#" class="float-end">Forgot Password</a>
-            </div>
-          </div>
-          <div class="modal-footer pt-4">                  
-            <button type="button" class="btn btn-success mx-auto w-100">Login</button>
-          </div>
-          <p class="text-center">Not yet an account, <a href="#" data-bs-toggle="modal" data-bs-target="#RegisterForm">Sign up</a></p> 
-      </form>
-    </div>
-  </div>
-</div>
-
-
-
-
-<div class="modal fade" id="RegisterForm" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <!-- Registration Form -->
-      <form method="POST" action="main/register">
-        <div class="modal-header">
-          <h5 class="modal-title">Registration Form</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="mb-3">
-            <label for="FirstName">First Name<span class="text-danger">*</span></label>
-            <input type="text" name="first_name" class="form-control" id="FirstName" placeholder="Enter First Name" required>
-          </div>
-
-          <div class="mb-3">
-            <label for="LastName">Last Name<span class="text-danger">*</span></label>
-            <input type="text" name="last_name" class="form-control" id="LastName" placeholder="Enter Last Name" required>
-          </div>
-
-          <div class="mb-3">
-            <label for="Email">Email Address<span class="text-danger">*</span></label>
-            <input type="email" name="email" class="form-control" id="Email" placeholder="Enter Email" required>
-          </div>
-
-          <div class="mb-3">
-            <label for="NewPassword">New Password<span class="text-danger">*</span></label>
-            <input type="password" name="new_password" class="form-control" id="NewPassword" placeholder="Enter New Password" required>
-          </div>
-
-          <div class="mb-3">
-            <label for="ConfirmPassword">Confirm Password<span class="text-danger">*</span></label>
-            <input type="password" name="confirm_password" class="form-control" id="ConfirmPassword" placeholder="Confirm Password" required>
-          </div>
-        </div>
-        <div class="modal-footer pt-4">
-          <button type="button" class="btn btn-success mx-auto w-100">Register</button>
-        </div>
-        <p class="text-center">Already have an account? <a href="#" data-bs-toggle="modal" data-bs-target="#LoginForm">Login</a></p>
-      </form>
-    </div>
-  </div>
-</div>
 
 
 </body>

@@ -25,10 +25,9 @@ Below is a high-level overview of the project structure:
 │   ├───config
 │   │   # Configuration files for the application
 │   ├───database
-│   │   ├───migrations
-│   │   │   # Database migration scripts for evolving the database schema
-│   │   └───recruiter
-│   │       # Database-related code and scripts specific to the recruiter module
+│   │   └───migrations
+│   │      # Database migration scripts for evolving the database schema
+│   │   
 │   ├───handlers
 │   │   ├───jobseeker
 │   │   │   # Handlers and controllers specific to jobseeker actions

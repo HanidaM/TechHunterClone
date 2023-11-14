@@ -3,14 +3,21 @@
 package web
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func RegisterWebRoutes(r *gin.Engine) {
 
-	r.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "mainpage.html", gin.H{})
+	r.GET("/main", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "main.html", gin.H{})
+	})
+	r.GET("/auth/login", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "login.html", gin.H{})
+	})
+	r.GET("/auth/signup", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "signup.html", gin.H{})
 	})
 
 }

@@ -1,13 +1,14 @@
 package auth
 
 import (
+	"TechHunterClone/src/database"
 	models "TechHunterClone/src/models/user"
 	services "TechHunterClone/src/services/auth_service"
 	"errors"
-	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 	"net/http"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 func errorResponse(c *gin.Context, status int, err error) {
@@ -30,14 +31,14 @@ func RegisterHandler(c *gin.Context) {
 		role = models.RoleRecruiter
 	}
 
-	user := &models.User{
+	newUser := &models.User{
 		FirstName: firstName,
 		LastName:  lastName,
 		Email:     email,
 		Password:  password,
 		Role:      role,
 	}
-	err := services.ValidateUser(user)
+	err := services.ValidateUser(newUser)
 	if err != nil {
 		errorResponse(c, http.StatusBadRequest, err)
 		return
@@ -48,32 +49,21 @@ func RegisterHandler(c *gin.Context) {
 		return
 	}
 
-	hashedPassword, err := services.HashPassword(password) // Hash the password
+	hashedPassword, err := services.HashPassword(password)
 	if err != nil {
 		errorResponse(c, http.StatusInternalServerError, errors.New("failed to hash password"))
 		return
 	}
+	newUser.Password = hashedPassword
 
-	user.Password = hashedPassword // Set the hashed password
-
-	db, ok := c.Get("db")
-	if !ok {
-		errorResponse(c, http.StatusInternalServerError, errors.New("database connection not found"))
-		return
-	}
-
-	dbInstance, ok := db.(*gorm.DB)
-	if !ok {
-		errorResponse(c, http.StatusInternalServerError, errors.New("invalid database connection"))
-		return
-	}
-
-	err = dbInstance.Create(user).Error
+	// Use the global DB instance from the database package
+	err = database.DB.Create(newUser).Error
 	if err != nil {
 		errorResponse(c, http.StatusInternalServerError, err)
 		return
 	}
-	c.Redirect(http.StatusFound, "/login")
+
+	c.Redirect(http.StatusOK, "/auth/login")
 }
 
 func LoginHandler(c *gin.Context) {
@@ -85,20 +75,8 @@ func LoginHandler(c *gin.Context) {
 		return
 	}
 
-	db, ok := c.Get("db")
-	if !ok {
-		errorResponse(c, http.StatusInternalServerError, errors.New("database connection not found in context"))
-		return
-	}
-
-	dbInstance, ok := db.(*gorm.DB)
-	if !ok {
-		errorResponse(c, http.StatusInternalServerError, errors.New("invalid database connection in context"))
-		return
-	}
-
 	var user models.User
-	if err := dbInstance.Where("email = ?", email).First(&user).Error; err != nil {
+	if err := database.DB.Where("email = ?", email).First(&user).Error; err != nil {
 		errorResponse(c, http.StatusUnauthorized, errors.New("invalid email or password"))
 		return
 	}
@@ -115,11 +93,10 @@ func LoginHandler(c *gin.Context) {
 	}
 
 	c.SetCookie("token", accessToken, int(time.Hour.Seconds()*48), "/", "", false, true)
-
-	c.Redirect(http.StatusFound, "/main")
+	c.Redirect(http.StatusOK, "/main")
 }
 
 func LogoutHandler(c *gin.Context) {
 	c.SetCookie("token", "", -1, "/", "", false, true)
-	c.Redirect(http.StatusSeeOther, "/")
+	c.Redirect(http.StatusOK, "/main")
 }

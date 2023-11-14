@@ -1,13 +1,13 @@
 package models
 
 import (
+	"errors"
 	"gorm.io/gorm"
 )
 
 type Role string
 
 const (
-	RoleAdmin     Role = "admin"
 	RoleUser      Role = "user"
 	RoleRecruiter Role = "recruiter"
 )
@@ -20,4 +20,16 @@ type User struct {
 	Email     string `json:"email" gorm:"uniqueIndex;type:varchar(100)" validate:"required,email"`
 	Password  string `json:"-"`
 	Role      Role   `json:"role" gorm:"index;type:varchar(20)"`
+}
+
+func (u *User) Validate() error {
+	if u.Email == "" {
+		return errors.New("email required")
+	}
+
+	if u.Password == "" {
+		return errors.New("password required")
+	}
+
+	return nil
 }

@@ -10,7 +10,7 @@ import (
 func AuthRoutes(r *gin.Engine) {
 	authRoutes := r.Group("/auth")
 	{
-		authRoutes.POST("/register", auth.RegisterHandler)
+		authRoutes.POST("/signup", auth.RegisterHandler)
 		authRoutes.POST("/login", auth.LoginHandler)
 		authRoutes.POST("/logout", auth.LogoutHandler)
 	}
