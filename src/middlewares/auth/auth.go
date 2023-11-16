@@ -56,14 +56,13 @@ func RegisterHandler(c *gin.Context) {
 	}
 	newUser.Password = hashedPassword
 
-	// Use the global DB instance from the database package
 	err = database.DB.Create(newUser).Error
 	if err != nil {
 		errorResponse(c, http.StatusInternalServerError, err)
 		return
 	}
 
-	c.Redirect(http.StatusOK, "/auth/login")
+	c.Redirect(http.StatusFound, "/auth/login")
 }
 
 func LoginHandler(c *gin.Context) {
@@ -93,10 +92,10 @@ func LoginHandler(c *gin.Context) {
 	}
 
 	c.SetCookie("token", accessToken, int(time.Hour.Seconds()*48), "/", "", false, true)
-	c.Redirect(http.StatusOK, "/main")
+	c.Redirect(http.StatusFound, "/main")
 }
 
 func LogoutHandler(c *gin.Context) {
 	c.SetCookie("token", "", -1, "/", "", false, true)
-	c.Redirect(http.StatusOK, "/main")
+	c.Redirect(http.StatusFound, "/main")
 }

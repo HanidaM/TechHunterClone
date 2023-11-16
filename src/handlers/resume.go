@@ -2,9 +2,10 @@ package handlers
 
 import (
 	"TechHunterClone/src/database"
-	models "TechHunterClone/src/models/application"
-	"github.com/gin-gonic/gin"
+	models "TechHunterClone/src/models/user"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 // GetResumes fetches all resumes

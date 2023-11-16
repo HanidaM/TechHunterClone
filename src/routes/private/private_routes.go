@@ -1,23 +1,25 @@
 package private
 
 import (
+	"TechHunterClone/src/handlers"
 	"TechHunterClone/src/handlers/jobseeker"
 	"TechHunterClone/src/handlers/recruiter"
+
 	"github.com/gin-gonic/gin"
 )
 
 func VacancyRoutes(r *gin.Engine) {
-	// Create routes for the Vacancy model
+	// Routes for the Vacancy model
 
 	vacancyRoutes := r.Group("/vacancies")
 	{
 		vacancyRoutes.POST("/", recruiter.CreateVacancy)
 		vacancyRoutes.PUT("/:id", recruiter.UpdateVacancy)
-		vacancyRoutes.DELETE("/:id", recruiter.DeleteVacancy)
+		// vacancyRoutes.DELETE("/:id", recruiter.DeleteVacancy)
 	}
 }
 func CompanyRoutes(r *gin.Engine) {
-	// Create routes for the Company model
+	// Routes for the Company model
 	companyRoutes := r.Group("/companies")
 	{
 		companyRoutes.POST("/", recruiter.CreateCompany)
@@ -27,11 +29,13 @@ func CompanyRoutes(r *gin.Engine) {
 	}
 }
 func ResumeRoutes(r *gin.Engine) {
-	// Create routes for the Resume model
+	// Routes for the Resume model
 	resumeRoutes := r.Group("/resumes")
 	{
-		resumeRoutes.POST("/", jobseeker.CreateResume)
-		resumeRoutes.PUT("/:id", jobseeker.UpdateResume)
+		resumeRoutes.GET("/", handlers.GetResumes)
+		resumeRoutes.GET("/:id", handlers.GetResume)
+		resumeRoutes.POST("/create", jobseeker.CreateResume)
+		resumeRoutes.PUT("/update/:id", jobseeker.UpdateResume)
 		resumeRoutes.DELETE("/:id", jobseeker.DeleteResume)
 	}
 }

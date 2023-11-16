@@ -27,10 +27,21 @@
             <a class="nav-link" href="#">Link</a>
           
         </ul>
-        <div class="col-md-3 text-end">
-          <button type="button" class="btn btn-outline-danger me-2" >Login</button>
-          <button type="button" class="btn btn-danger" >Sign-up</button>
-        </div>      
+        <div class="col-md-4 text-end">
+          {{ if .LoggedIn }}
+            <form action="/auth/logout" method="POST" class="d-inline">
+                <button type="submit" class="btn btn-outline-danger me-2">Logout</button>
+            </form>
+              <button type="button" class="btn btn-danger"  onclick="window.location.href='/user/profile'" >Profile</button>
+              {{ if eq .Role "recruiter" }}
+                  <button type="button" class="btn btn-success" onclick="window.location.href='/create/vacancy'">Create Vacancy</button>
+              {{ end }}
+          {{ else }}
+              <button type="button" class="btn btn-outline-danger me-2" onclick="window.location.href='/auth/login'">Login</button>
+              <button type="button" class="btn btn-danger"  onclick="window.location.href='/auth/signup'" >Sign-up</button>
+          {{ end }}
+      </div>
+      
       </div>
     </div>
   </nav>

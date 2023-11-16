@@ -8,11 +8,12 @@ import (
 // Vacancy represents a job listing.
 type Vacancy struct {
 	gorm.Model
-	Title    string `json:"title" gorm:"index;type:varchar(100)"`
-	Salary   string `json:"salary" gorm:"type:varchar(50)"`
-	Company  string `json:"company" gorm:"type:varchar(100)"`
-	Location string `json:"location" gorm:"type:varchar(100)"`
-	UserID   uint   `json:"user_id" gorm:"not null"` // Foreign key
+	JobTitle   string `json:"job_title" gorm:"index;type:varchar(100)"`
+	VacancyURL string `json:"vacancy_url" gorm:"type:text"`
+	Salary     string `json:"salary" gorm:"type:varchar(50)"`
+	Company    string `json:"company" gorm:"type:varchar(100)"`
+	Location   string `json:"location" gorm:"type:varchar(100)"`
+	UserID     uint   `json:"user_id" gorm:"not null"` // Foreign key
 }
 
 // VacancyDescription represents the details of a job vacancy.
@@ -21,8 +22,7 @@ type VacancyDescription struct {
 	Description string `json:"description" gorm:"type:text"`
 	Keywords    string `json:"keywords" gorm:"type:text"`   // JSON encoded string
 	TechStack   string `json:"tech_stack" gorm:"type:text"` // JSON encoded string
-	URL         string `json:"url" gorm:"type:text"`
-	VacancyID   uint   `json:"vacancy_id" gorm:"not null"` // Foreign key
+	VacancyID   uint   `json:"vacancy_id" gorm:"not null"`  // Foreign key
 }
 
 // Company represents an employer's company information.

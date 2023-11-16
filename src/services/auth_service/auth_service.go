@@ -35,6 +35,25 @@ func CreateToken(user *models.User) (string, error) {
 	return token.SignedString([]byte(secretKey))
 }
 
+func VerifyToken(tokenString string) (*models.User, error) {
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, errors.New("Unexp signing method")
+		}
+		return []byte(secretKey), nil
+	})
+
+	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		user := &models.User{
+			Email: claims["email"].(string),
+			ID:    uint(claims["user_id"].(float64)),
+			Role:  models.Role(claims["role"].(string)),
+		}
+		return user, nil
+	} else {
+		return nil, err
+	}
+}
 func ValidateUser(user *models.User) error {
 	if len(user.FirstName) == 0 {
 		return errors.New("first name is required")

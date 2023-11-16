@@ -11,7 +11,6 @@ import (
 
 // CreateCompany creates a new company profile
 func CreateCompany(c *gin.Context) {
-	// Implement the creation logic
 	var company models.Company
 	if err := c.BindJSON(&company); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -28,7 +27,6 @@ func CreateCompany(c *gin.Context) {
 
 // UpdateCompany updates an existing company profile
 func UpdateCompany(c *gin.Context) {
-	// Implement the update logic
 	var company models.Company
 	id := c.Param("id")
 
@@ -49,7 +47,6 @@ func UpdateCompany(c *gin.Context) {
 
 // DeleteCompany deletes an existing company profile
 func DeleteCompany(c *gin.Context) {
-	// Implement the deletion logic
 	id := c.Param("id")
 
 	if err := database.DB.Delete(&models.Company{}, id).Error; err != nil {
