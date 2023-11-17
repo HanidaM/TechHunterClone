@@ -1,7 +1,6 @@
 package private
 
 import (
-	"TechHunterClone/src/handlers"
 	"TechHunterClone/src/handlers/jobseeker"
 	"TechHunterClone/src/handlers/recruiter"
 
@@ -32,8 +31,8 @@ func ResumeRoutes(r *gin.Engine) {
 	// Routes for the Resume model
 	resumeRoutes := r.Group("/resumes")
 	{
-		resumeRoutes.GET("/", handlers.GetResumes)
-		resumeRoutes.GET("/:id", handlers.GetResume)
+		resumeRoutes.GET("/", jobseeker.GetResume)
+		resumeRoutes.GET("/:id", jobseeker.GetResume)
 		resumeRoutes.POST("/create", jobseeker.CreateResume)
 		resumeRoutes.PUT("/update/:id", jobseeker.UpdateResume)
 		resumeRoutes.DELETE("/:id", jobseeker.DeleteResume)

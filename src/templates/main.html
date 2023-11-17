@@ -32,7 +32,7 @@
             <form action="/auth/logout" method="POST" class="d-inline">
                 <button type="submit" class="btn btn-outline-danger me-2">Logout</button>
             </form>
-              <button type="button" class="btn btn-danger"  onclick="window.location.href='/user/profile'" >Profile</button>
+              <button type="button" class="btn btn-danger"  onclick="window.location.href='/main/profile/user'" >Profile</button>
               {{ if eq .Role "recruiter" }}
                   <button type="button" class="btn btn-success" onclick="window.location.href='/create/vacancy'">Create Vacancy</button>
               {{ end }}

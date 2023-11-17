@@ -5,6 +5,7 @@ package jobseeker
 import (
 	"TechHunterClone/src/database"
 	models "TechHunterClone/src/models/user"
+	services "TechHunterClone/src/services/auth_service"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -34,12 +35,28 @@ func GetResume(c *gin.Context) {
 }
 
 // CreateResume creates a new resume
+
 func CreateResume(c *gin.Context) {
 	var resume models.Resume
+
+	tokenString, err := c.Cookie("jwt-token")
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "missing or invalid token"})
+		return
+	}
+
+	userID, err := services.GetID(tokenString)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized - invalid token"})
+		return
+	}
+
 	if err := c.BindJSON(&resume); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+
+	resume.UserID = userID
 
 	if err := database.DB.Create(&resume).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

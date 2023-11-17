@@ -10,6 +10,8 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+const secretKey = "token"
+
 func HashPassword(password string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
@@ -21,8 +23,6 @@ func HashPassword(password string) (string, error) {
 func CheckPassword(hashedPassword, password string) error {
 	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 }
-
-const secretKey = "your-secret-key"
 
 func CreateToken(user *models.User) (string, error) {
 	claims := jwt.MapClaims{
@@ -79,4 +79,27 @@ func isValidEmail(email string) bool {
 		return false
 	}
 	return strings.Contains(email, "@")
+}
+
+func GetID(tokenString string) (uint, error) {
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, errors.New("unexpected signing method")
+		}
+		return []byte(secretKey), nil
+	})
+
+	if err != nil {
+		return 0, err
+	}
+
+	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		userID, ok := claims["user_id"].(float64)
+		if !ok {
+			return 0, errors.New("user_id not found in token")
+		}
+		return uint(userID), nil
+	} else {
+		return 0, errors.New("invalid token")
+	}
 }

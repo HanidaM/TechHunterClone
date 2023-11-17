@@ -1,6 +1,6 @@
 // src/routes/public/auth_routes.go
 
-package routes
+package auth
 
 import (
 	"TechHunterClone/src/middlewares/auth"

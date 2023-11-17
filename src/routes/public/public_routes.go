@@ -1,22 +1,22 @@
 package public
 
 import (
-	"TechHunterClone/src/handlers"
+	"TechHunterClone/src/handlers/user"
 	"github.com/gin-gonic/gin"
 )
 
 func VacancyRoutes(r *gin.Engine) {
 	vacancyRoutes := r.Group("/vacancies")
 	{
-		vacancyRoutes.GET("/", handlers.GetVacancies)
-		vacancyRoutes.GET("/:id", handlers.GetVacancy)
+		vacancyRoutes.GET("/", user.GetVacancies)
+		vacancyRoutes.GET("/:id", user.GetVacancy)
 	}
 }
 func CompanyRoutes(r *gin.Engine) {
 	companyRoutes := r.Group("/companies")
 	{
-		companyRoutes.GET("/", handlers.GetCompanies)
-		companyRoutes.GET("/:id", handlers.GetCompany)
+		companyRoutes.GET("/", user.GetCompanies)
+		companyRoutes.GET("/:id", user.GetCompany)
 
 	}
 }

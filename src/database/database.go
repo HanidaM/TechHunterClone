@@ -7,11 +7,20 @@ import (
 	"log"
 )
 
+// const (
+//
+//	host     = "localhost"
+//	port     = 5432
+//	user     = "baurzhkk"
+//	password = "bauka2003"
+//	dbname   = "techbd"
+//
+// )
 const (
-	host     = "localhost"
+	host     = "ep-misty-cloud-327990.us-east-2.aws.neon.tech"
 	port     = 5432
 	user     = "baurzhkk"
-	password = "bauka2003"
+	password = "rXGDm0y6ViTF"
 	dbname   = "techbd"
 )
 

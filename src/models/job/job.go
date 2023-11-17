@@ -20,9 +20,9 @@ type Vacancy struct {
 type VacancyDescription struct {
 	gorm.Model
 	Description string `json:"description" gorm:"type:text"`
-	Keywords    string `json:"keywords" gorm:"type:text"`   // JSON encoded string
-	TechStack   string `json:"tech_stack" gorm:"type:text"` // JSON encoded string
-	VacancyID   uint   `json:"vacancy_id" gorm:"not null"`  // Foreign key
+	Keywords    string `json:"keywords" gorm:"type:text"`
+	TechStack   string `json:"tech_stack" gorm:"type:text"`
+	VacancyID   uint   `json:"vacancy_id" gorm:"not null"`
 }
 
 // Company represents an employer's company information.
@@ -33,7 +33,7 @@ type Company struct {
 	Headcount   int    `json:"headcount"`
 	Type        string `json:"company_type" gorm:"type:varchar(50)"`
 	Industry    string `json:"company_industry" gorm:"type:varchar(50)"`
-	TechStacks  string `json:"tech_stacks" gorm:"type:text"` // JSON encoded string
+	TechStacks  string `json:"tech_stacks" gorm:"type:text"`
 	LogoURL     string `json:"logo_url" gorm:"type:text"`
 	WebsiteURL  string `json:"website_url" gorm:"type:text"`
 	ReviewedAt  *time.Time

@@ -91,11 +91,11 @@ func LoginHandler(c *gin.Context) {
 		return
 	}
 
-	c.SetCookie("token", accessToken, int(time.Hour.Seconds()*48), "/", "", false, true)
+	c.SetCookie("jwt-token", accessToken, int(time.Hour.Seconds()*48), "/", "localhost", false, true)
 	c.Redirect(http.StatusFound, "/main")
 }
 
 func LogoutHandler(c *gin.Context) {
-	c.SetCookie("token", "", -1, "/", "", false, true)
+	c.SetCookie("jwt-token", "", -1, "/", "localhost", false, true)
 	c.Redirect(http.StatusFound, "/main")
 }

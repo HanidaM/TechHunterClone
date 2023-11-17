@@ -1,4 +1,4 @@
-package handlers
+package user
 
 import (
 	"TechHunterClone/src/database"
@@ -7,7 +7,6 @@ import (
 	"net/http"
 )
 
-// GetCompanies fetches all companies
 func GetCompanies(c *gin.Context) {
 	var companies []models.Company
 	if err := database.DB.Find(&companies).Error; err != nil {
@@ -18,7 +17,6 @@ func GetCompanies(c *gin.Context) {
 
 }
 
-// GetCompany fetches a single company by ID
 func GetCompany(c *gin.Context) {
 	var company models.Company
 	id := c.Param("id")
