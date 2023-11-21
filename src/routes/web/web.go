@@ -6,6 +6,8 @@ import (
 	"TechHunterClone/src/database"
 	models "TechHunterClone/src/models/user"
 	services "TechHunterClone/src/services/auth_service"
+	"errors"
+	"gorm.io/gorm"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -20,7 +22,7 @@ func RegisterWebRoutes(r *gin.Engine) {
 	})
 
 	r.GET("/main", func(c *gin.Context) {
-		token, err := c.Cookie("jwt-token")
+		token, err := c.Cookie("Authorise")
 		var loggedIn bool
 		var role string
 		if err == nil {
@@ -38,8 +40,12 @@ func RegisterWebRoutes(r *gin.Engine) {
 	})
 
 	r.GET("/main/profile/user", func(c *gin.Context) {
-		token, _ := c.Cookie("jwt-token")
+		token, err := c.Cookie("Authorise")
+		if err != nil {
+			c.JSON(http.StatusNotFound, gin.H{"error": "token not found"})
+			return
 
+		}
 		user, err := services.VerifyToken(token)
 		if err != nil {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized - invalid token"})
@@ -49,7 +55,12 @@ func RegisterWebRoutes(r *gin.Engine) {
 		var resume models.Resume
 		resumeExists := true
 		if err := database.DB.Where("user_id = ?", user.ID).First(&resume).Error; err != nil {
-			resumeExists = false // Resume not found or other error
+			if errors.Is(err, gorm.ErrRecordNotFound) {
+				resumeExists = false
+			} else {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "internal server error"})
+				return
+			}
 		}
 
 		c.HTML(http.StatusOK, "userpage.html", gin.H{

@@ -8,7 +8,6 @@ import (
 )
 
 func VacancyRoutes(r *gin.Engine) {
-	// Routes for the Vacancy model
 
 	vacancyRoutes := r.Group("/vacancies")
 	{
@@ -18,7 +17,6 @@ func VacancyRoutes(r *gin.Engine) {
 	}
 }
 func CompanyRoutes(r *gin.Engine) {
-	// Routes for the Company model
 	companyRoutes := r.Group("/companies")
 	{
 		companyRoutes.POST("/", recruiter.CreateCompany)
@@ -28,7 +26,6 @@ func CompanyRoutes(r *gin.Engine) {
 	}
 }
 func ResumeRoutes(r *gin.Engine) {
-	// Routes for the Resume model
 	resumeRoutes := r.Group("/resumes")
 	{
 		resumeRoutes.GET("/", jobseeker.GetResume)

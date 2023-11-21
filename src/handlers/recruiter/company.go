@@ -9,7 +9,6 @@ import (
 	"net/http"
 )
 
-// CreateCompany creates a new company profile
 func CreateCompany(c *gin.Context) {
 	var company models.Company
 	if err := c.BindJSON(&company); err != nil {
@@ -25,7 +24,6 @@ func CreateCompany(c *gin.Context) {
 	c.JSON(http.StatusCreated, company)
 }
 
-// UpdateCompany updates an existing company profile
 func UpdateCompany(c *gin.Context) {
 	var company models.Company
 	id := c.Param("id")
@@ -45,7 +43,6 @@ func UpdateCompany(c *gin.Context) {
 	c.JSON(http.StatusOK, company)
 }
 
-// DeleteCompany deletes an existing company profile
 func DeleteCompany(c *gin.Context) {
 	id := c.Param("id")
 

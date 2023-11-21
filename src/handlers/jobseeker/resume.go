@@ -11,7 +11,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// GetResumes gets all resumes
 func GetResumes(c *gin.Context) {
 	var resumes []models.Resume
 	if err := database.DB.Find(&resumes).Error; err != nil {
@@ -21,7 +20,6 @@ func GetResumes(c *gin.Context) {
 	c.JSON(http.StatusOK, resumes)
 }
 
-// GetResume gets a single resume by ID
 func GetResume(c *gin.Context) {
 	var resume models.Resume
 	id := c.Param("id")
@@ -34,39 +32,35 @@ func GetResume(c *gin.Context) {
 	c.JSON(http.StatusOK, resume)
 }
 
-// CreateResume creates a new resume
-
 func CreateResume(c *gin.Context) {
 	var resume models.Resume
 
-	tokenString, err := c.Cookie("jwt-token")
+	if err := c.BindJSON(&resume); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid resume data", "details": err.Error()})
+		return
+	}
+
+	tokenString, err := c.Cookie("Authorise")
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "missing or invalid token"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Authentication required: No token found"})
 		return
 	}
 
 	userID, err := services.GetID(tokenString)
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized - invalid token"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Authentication failed: Invalid token"})
 		return
 	}
-
-	if err := c.BindJSON(&resume); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
 	resume.UserID = userID
 
 	if err := database.DB.Create(&resume).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create resume", "details": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusCreated, resume)
+	c.JSON(http.StatusOK, gin.H{"message": "Resume created successfully", "resumeID": resume.ID})
 }
 
-// UpdateResume updates an existing resume
 func UpdateResume(c *gin.Context) {
 	var resume models.Resume
 	id := c.Param("id")
@@ -86,7 +80,6 @@ func UpdateResume(c *gin.Context) {
 	c.JSON(http.StatusOK, resume)
 }
 
-// DeleteResume deletes an existing resume
 func DeleteResume(c *gin.Context) {
 	id := c.Param("id")
 

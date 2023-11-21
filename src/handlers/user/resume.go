@@ -8,7 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// GetResumes fetches all resumes
 func GetResumes(c *gin.Context) {
 	var resumes []models.Resume
 	if err := database.DB.Find(&resumes).Error; err != nil {
@@ -18,7 +17,6 @@ func GetResumes(c *gin.Context) {
 	c.JSON(http.StatusOK, resumes)
 }
 
-// GetResume fetches a single resume by ID
 func GetResume(c *gin.Context) {
 	var resume models.Resume
 	id := c.Param("id")

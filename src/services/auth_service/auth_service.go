@@ -3,14 +3,15 @@ package services
 import (
 	models "TechHunterClone/src/models/user"
 	"errors"
+	"fmt"
 	"strings"
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 )
 
-const secretKey = "token"
+const secretKey = "jwt"
 
 func HashPassword(password string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
@@ -38,10 +39,14 @@ func CreateToken(user *models.User) (string, error) {
 func VerifyToken(tokenString string) (*models.User, error) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, errors.New("Unexp signing method")
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
 		return []byte(secretKey), nil
 	})
+
+	if err != nil {
+		return nil, err
+	}
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		user := &models.User{
@@ -51,9 +56,10 @@ func VerifyToken(tokenString string) (*models.User, error) {
 		}
 		return user, nil
 	} else {
-		return nil, err
+		return nil, fmt.Errorf("invalid token")
 	}
 }
+
 func ValidateUser(user *models.User) error {
 	if len(user.FirstName) == 0 {
 		return errors.New("first name is required")
@@ -84,7 +90,7 @@ func isValidEmail(email string) bool {
 func GetID(tokenString string) (uint, error) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, errors.New("unexpected signing method")
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
 		return []byte(secretKey), nil
 	})
@@ -96,10 +102,10 @@ func GetID(tokenString string) (uint, error) {
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		userID, ok := claims["user_id"].(float64)
 		if !ok {
-			return 0, errors.New("user_id not found in token")
+			return 0, fmt.Errorf("user_id not found in token")
 		}
 		return uint(userID), nil
 	} else {
-		return 0, errors.New("invalid token")
+		return 0, fmt.Errorf("invalid token")
 	}
 }

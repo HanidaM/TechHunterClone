@@ -9,7 +9,6 @@ import (
 	"net/http"
 )
 
-// CreateVacancy creates a new job vacancy
 func CreateVacancy(c *gin.Context) {
 	var vacancy models.Vacancy
 	if err := c.BindJSON(&vacancy); err != nil {
@@ -25,7 +24,6 @@ func CreateVacancy(c *gin.Context) {
 	c.JSON(http.StatusCreated, vacancy)
 }
 
-// UpdateVacancy updates an existing job vacancy
 func UpdateVacancy(c *gin.Context) {
 	var vacancy models.Vacancy
 	id := c.Param("id")
@@ -45,7 +43,6 @@ func UpdateVacancy(c *gin.Context) {
 	c.JSON(http.StatusOK, vacancy)
 }
 
-// DeleteVacancy deletes an existing job vacancy
 func DeleteVacancy(c *gin.Context) {
 	id := c.Param("id")
 
