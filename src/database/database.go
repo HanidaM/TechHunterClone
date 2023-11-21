@@ -29,7 +29,7 @@ func ConnectDB() {
 
 	var err error
 
-	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s",
+	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=require",
 		host, port, user, password, dbname)
 
 	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
