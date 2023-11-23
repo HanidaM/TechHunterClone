@@ -4,7 +4,7 @@ package recruiter
 
 import (
 	"TechHunterClone/src/database"
-	models "TechHunterClone/src/models/job"
+	models "TechHunterClone/src/models/base"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )

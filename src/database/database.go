@@ -2,9 +2,10 @@ package database
 
 import (
 	"fmt"
+	"log"
+
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"log"
 )
 
 const (
@@ -29,7 +30,7 @@ func ConnectDB() {
 
 	var err error
 
-	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=require",
+	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s ",
 		host, port, user, password, dbname)
 
 	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})

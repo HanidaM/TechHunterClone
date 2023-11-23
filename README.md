@@ -20,7 +20,11 @@ This project is a job searching platform that connects job seekers with recruite
 ## Project Structure
 
 Below is a high-level overview of the project structure:
+
+Structure described below is known as a "Modular Directory Structure" or "Feature-based Directory Structure"
 ```
+├───docs
+│       # Swagger Config files .yml .json
 ├───src
 │   ├───config
 │   │   # Configuration files for the application
@@ -34,13 +38,10 @@ Below is a high-level overview of the project structure:
 │   │   └───recruiter
 │   │       # Handlers and controllers specific to recruiter actions
 │   ├───middlewares
-│   │   ├───auth
-│   │   │   # Middleware code for authentication (e.g., JWT, sessions)
-│   │   └───roles
-│   │       # Middleware code for role-based access control
-│   ├───models
-│   │   ├───application
-│   │   │   # Models and data structures related to job applications
+│   │   └───auth
+│   │      # Middleware code for authentication (e.g., JWT, sessions)
+│   │
+│   ├───models 
 │   │   ├───job
 │   │   │   # Models and data structures related to job postings
 │   │   └───user

@@ -2,7 +2,7 @@ package user
 
 import (
 	"TechHunterClone/src/database"
-	models "TechHunterClone/src/models/job"
+	models "TechHunterClone/src/models/base"
 	"github.com/gin-gonic/gin"
 	"math"
 	"net/http"
@@ -37,17 +37,4 @@ func GetVacancies(c *gin.Context) {
 		"totalPages":  totalPages,
 		"currentPage": page,
 	})
-}
-
-func GetVacancy(c *gin.Context) {
-	var vacancy models.Company
-	id := c.Param("id")
-
-	if err := database.DB.First(&vacancy, id).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Company not found"})
-		return
-	}
-
-	c.JSON(http.StatusOK, vacancy)
-
 }
